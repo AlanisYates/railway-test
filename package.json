@@ -5,6 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon --exec babel-node server.js",
+    "clean": "rm -rf build && mkdir build",
+    "build-babel": "babel -d ./build ./server.js -s",
+    "build": "npm run clean && npm run build-babel",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
