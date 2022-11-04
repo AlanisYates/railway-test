@@ -27,7 +27,7 @@ const resolvers = {
 
 async function startServer() {
   const app = express();
-  const server = new ApolloServer({ typeDefs, resolvers });
+  const server = new ApolloServer({ typeDefs, resolvers, csrfPrevention: true, });
 
   await server.start();
   server.applyMiddleware({ app });
