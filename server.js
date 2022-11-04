@@ -7,12 +7,14 @@ import http from "http";
 const typeDefs = gql`
   type Query {
     hello: String
+    data: String
   }
 `;
 
 const resolvers = {
   Query: {
     hello: () => "Hello World from alanis",
+    data: () => "This is an updated resolver",
   },
 };
 
@@ -33,8 +35,8 @@ async function startServer() {
   app.use(cors());
 
   app.get("/", (req, res) => {
-  res.send("Hello world");
-});
+    res.send("Hello world");
+  });
 
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
