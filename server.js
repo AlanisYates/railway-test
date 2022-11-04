@@ -1,5 +1,8 @@
 import express from "express";
 import { ApolloServer, gql } from "apollo-server-express";
+import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
+import cors from "cors";
+import http from "http";
 
 const typeDefs = gql`
   type Query {
@@ -27,14 +30,19 @@ const resolvers = {
 
 async function startServer() {
   const app = express();
-  const server = new ApolloServer({ typeDefs, resolvers, csrfPrevention: true, });
+  app.use(cors());
 
+  const httpServer = http.createServer(app);
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    csrfPrevention: true,
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  });
   await server.start();
   server.applyMiddleware({ app });
-
-  app.listen({ port: process.env.PORT || 4000 }, () =>
-    console.log(`🚀 Server ready at ${server.graphqlPath}`)
-  );
+  httpServer.listen({ port: process.env.PORT || 4000 });
+  console.log(`🚀 Server ready at ${server.graphqlPath}`);
 }
 
 startServer();
