@@ -32,6 +32,10 @@ async function startServer() {
   const app = express();
   app.use(cors());
 
+  app.get("/", (req, res) => {
+  res.send("Hello world");
+});
+
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
     typeDefs,
